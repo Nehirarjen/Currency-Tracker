@@ -105,31 +105,52 @@ function pad_right() {
 }
 
 # Funktion: display_dashboard
-# Zweck: Rendert das komplette Dashboard
+# Zweck: Rendert das komplette Dashboard mit Live-Daten aus dem RATES-Array
 function display_dashboard() {
     clear
-    echo -e "${COLOR_BOLD}=== SafeSync Enterprise Monitor ===${COLOR_RESET}\n"
+    echo -e "${COLOR_BOLD}=== SafeSync Enterprise Monitor ===${COLOR_RESET}"
+    echo -e "Zeit: $(date '+%d.%m.%Y %H:%M:%S')\n"
 
     draw_table_header
 
-    # Hier kommt später eine Schleife hin, die alle Währungen durchgeht.
-    # Für das Layout-Testing hier ein Hardcoded-Beispiel:
+    for curr in "${CURRENCIES[@]}"; do
+        local current_rate="${RATES[$curr]}"
+        [[ -z "$current_rate" || "$current_rate" == "null" ]] && continue
 
-    local trend_sym=$(get_trend_symbol 0.95 0.94)
-    local trend_col=$(get_trend_color 0.95 0.94)
-    local bar=$(draw_progress_bar 80)
+        local old_rate
+        old_rate=$(load_old_rate "$curr")
 
-    # Spalte 4: Balken hat immer 12 sichtbare Zeichen → pad_right auf 20 mit visible_len=12
-    local col1=$(pad_right "EUR"      8)
-    local col2=$(pad_right "0.95 CHF" 12)
-    local col4=$(pad_right "$bar"     20 12)
+        local trend_sym
+        trend_sym=$(get_trend_symbol "$current_rate" "$old_rate")
+        local trend_col
+        trend_col=$(get_trend_color "$current_rate" "$old_rate")
 
-    # Trendspalte: Symbol ist immer 1 sichtbares Zeichen → 8 Leerzeichen festes Padding
-    printf "║ %s ║ %s ║ ${trend_col}%s${COLOR_RESET}        ║ %s ║\n" \
-        "$col1" "$col2" "$trend_sym" "$col4"
+        # Abstand zum ATH: maximaler Kurs aus History als 100%
+        local max_rate
+        max_rate=$(grep ",$curr," "$HISTORY_FILE" 2>/dev/null | cut -d',' -f3 | sort -n | tail -1)
+        local pct=100
+        if [[ -n "$max_rate" && "$max_rate" != "0" ]]; then
+            pct=$(echo "scale=0; ($current_rate / $max_rate) * 100 / 1" | bc 2>/dev/null)
+            pct=${pct:-100}
+            (( pct > 100 )) && pct=100
+            (( pct < 0 ))   && pct=0
+        fi
+
+        local bar
+        bar=$(draw_progress_bar "$pct")
+
+        local rate_str
+        rate_str=$(printf "%.4f CHF" "$current_rate")
+
+        local col1 col2 col4
+        col1=$(pad_right "$curr"      8)
+        col2=$(pad_right "$rate_str" 12)
+        col4=$(pad_right "$bar"      20 12)
+
+        printf "║ %s ║ %s ║ ${trend_col}%s${COLOR_RESET}        ║ %s ║\n" \
+            "$col1" "$col2" "$trend_sym" "$col4"
+    done
 
     draw_table_footer
+    echo ""
 }
-
-# Test-Aufruf, um das Dashboard anzuzeigen
-display_dashboard

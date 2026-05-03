@@ -54,7 +54,7 @@ save_rates() {
     
     for curr in "${currencies[@]}"; do
         # Aufruf der API-Funktion (von Person 1)
-        local rate=$(get_rate "$curr")
+        local rate="${RATES[$curr]}"
         
         if [[ -n "$rate" && "$rate" != "null" ]]; then
             echo "$(date "+%Y-%m-%d %H:%M:%S"),$curr,$rate" >> "$HISTORY_FILE"

@@ -85,24 +85,18 @@ Dies ist eine automatisierte Nachricht von SafeSync."
 # =============================================================
 check_thresholds() {
     local csv_file="$(dirname "$0")/data/kurse_history.csv"
-    
+
     # Prüfen ob Datei existiert und Daten enthält (mehr als nur Header)
     [[ ! -f "$csv_file" || $(wc -l < "$csv_file") -lt 2 ]] && return
 
     for currency in "${CURRENCIES[@]}"; do
         local current_rate=${RATES[$currency]}
-        
-        # Spaltenindex der Währung ermitteln
-        local col_index=$(head -1 "$csv_file" | tr ',' '\n' | grep -n "^${currency}$" | cut -d: -f1)
+        [[ -z "$current_rate" ]] && continue
 
-        if [[ -z "$col_index" ]]; then
-            continue
-        fi
+        # Letzten gespeicherten Kurs aus zeilenbasierter CSV lesen
+        local last_rate=$(grep ",$currency," "$csv_file" | tail -1 | cut -d',' -f3)
 
-        # Letzten Kurs aus der CSV lesen
-        local last_rate=$(tail -1 "$csv_file" | cut -d',' -f"$col_index")
-
-        if [[ "$last_rate" != "N/A" && "$current_rate" != "N/A" && "$last_rate" != "0" ]]; then
+        if [[ -n "$last_rate" && "$last_rate" != "N/A" && "$current_rate" != "N/A" && "$last_rate" != "0" ]]; then
             # Prozentuale Änderung berechnen
             local change=$(echo "scale=2; (($current_rate - $last_rate) / $last_rate) * 100" | bc)
             local abs_change=$(echo "$change" | tr -d '-')
@@ -110,7 +104,7 @@ check_thresholds() {
             if (( $(echo "$abs_change >= $ALERT_THRESHOLD" | bc -l) )); then
                 local direction="UP"
                 (( $(echo "$change < 0" | bc -l) )) && direction="DOWN"
-                
+
                 send_alert "$currency" "$change" "$direction"
             fi
         fi

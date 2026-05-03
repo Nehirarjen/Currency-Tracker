@@ -29,7 +29,7 @@ main() {
 
     save_rates          # Person 3: Kurse in CSV speichern
 
-    show_dashboard      # Person 2: Tabelle anzeigen
+    display_dashboard   # Person 2: Tabelle anzeigen
 }
 
 main
