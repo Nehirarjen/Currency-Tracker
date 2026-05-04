@@ -22,10 +22,10 @@ main() {
     init_storage        # Person 3: CSV + Log vorbereiten
 
     run_api             # Person 1: Kurse holen + Alerts prüfen
-   # if [[ $? -ne 0 ]]; then
-    #    echo "Fehler beim API-Aufruf. Siehe data/safesync.log"
-     #   exit 1
-    #fi
+    if [[ $? -ne 0 ]]; then
+        echo "Fehler beim API-Aufruf. Siehe data/safesync.log"
+        exit 1
+    fi
 
     save_rates          # Person 3: Kurse in CSV speichern
 

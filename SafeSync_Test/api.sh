@@ -66,7 +66,31 @@ fetch_rates() {
 #             $3 = Richtung (UP oder DOWN)
 # RÜCKGABE:   Exit-Code 0=gesendet / 1=Fehler
 # =============================================================
+send_alert() {
+    local curr=$1
+    local diff=$2
+    local dir=$3
+    local val=${RATES[$curr]}
 
+    local subject="[SafeSync] Markt-Alarm: $curr ist $dir ($diff%)"
+    local body="Achtung: Der Kurs von $curr hat sich signifikant verändert.
+
+Währung: $curr
+Richtung: $dir
+Veränderung: $diff%
+Aktueller Kurs: $val CHF
+
+Zeitpunkt: $(date '+%d.%m.%Y %H:%M:%S')
+Dies ist eine automatisierte Nachricht von SafeSync."
+
+    echo "$body" | mailx -s "$subject" "$ALERT_MAIL"
+
+    if [[ $? -eq 0 ]]; then
+        log_status "OK" "E-Mail-Alert für $curr erfolgreich versendet."
+    else
+        log_status "NotOK" "E-Mail-Versand für $curr fehlgeschlagen."
+    fi
+}
 
 # =============================================================
 # FUNKTION:   check_thresholds
@@ -78,33 +102,7 @@ fetch_rates() {
 # =============================================================
 check_thresholds() {
     local csv_file="$(dirname "$0")/data/kurse_history.csv"
-send_alert() {
-    local curr=$1
-    local diff=$2
-    local dir=$3
-    local val=${RATES[$curr]}
-    
-    local subject="[SafeSync] Markt-Alarm: $curr ist $dir ($diff%)"
-    local body="Achtung: Der Kurs von $curr hat sich signifikant verändert.
-    
-Währung: $curr
-Richtung: $dir
-Veränderung: $diff%
-Aktueller Kurs: $val CHF
 
-Zeitpunkt: $(date '+%d.%m.%Y %H:%M:%S')
-Dies ist eine automatisierte Nachricht von SafeSync."
-
-    # Versand-Befehl
-    echo "$body" | mailx -s "$subject" "$ALERT_MAIL"
-    
-    if [[ $? -eq 0 ]]; then
-        log_status "OK" "E-Mail-Alert für $curr erfolgreich versendet."
-    else
-        log_status "NotOK" "E-Mail-Versand für $curr fehlgeschlagen."
-    fi
-}
-    
     # Falls Datei nicht existiert oder leer ist (nur Header), abbrechen
     [[ ! -f "$csv_file" || $(wc -l < "$csv_file") -lt 2 ]] && return
 
