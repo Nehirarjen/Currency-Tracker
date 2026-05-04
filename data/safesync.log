@@ -70,6 +70,80 @@
 [2026-05-04 08:45:17] [OK] - Krypto-Daten erfolgreich verarbeitet.
 [2026-05-04 08:45:17] [OK] - Starte Synchronisation der Kurse...
 [2026-05-04 08:45:17] [OK] - Synchronisation erfolgreich abgeschlossen.
+<<<<<<< HEAD
+[2026-05-04 09:02:09] [INFO] - Starte Fiat-API-Abfrage: https://api.exchangerate-api.com/v4/latest/CHF
+[2026-05-04 09:02:10] [OK] - Fiat-Daten erfolgreich verarbeitet.
+[2026-05-04 09:02:10] [INFO] - Starte Krypto-API-Abfrage: CoinGecko
+[2026-05-04 09:02:10] [OK] - Krypto-Daten erfolgreich verarbeitet.
+[2026-05-04 09:02:10] [OK] - Starte Synchronisation der Kurse...
+[2026-05-04 09:02:10] [OK] - Synchronisation erfolgreich abgeschlossen.
+[2026-05-04 09:02:10] [INFO] - Starte Fiat-API-Abfrage: https://api.exchangerate-api.com/v4/latest/CHF
+[2026-05-04 09:02:11] [OK] - Fiat-Daten erfolgreich verarbeitet.
+[2026-05-04 09:02:11] [INFO] - Starte Krypto-API-Abfrage: CoinGecko
+[2026-05-04 09:02:11] [OK] - Krypto-Daten erfolgreich verarbeitet.
+[2026-05-04 09:02:11] [OK] - Starte Synchronisation der Kurse...
+[2026-05-04 09:02:11] [OK] - Synchronisation erfolgreich abgeschlossen.
+[2026-05-04 09:02:11] [INFO] - Starte Fiat-API-Abfrage: https://api.exchangerate-api.com/v4/latest/CHF
+[2026-05-04 09:02:12] [OK] - Fiat-Daten erfolgreich verarbeitet.
+[2026-05-04 09:02:12] [INFO] - Starte Krypto-API-Abfrage: CoinGecko
+[2026-05-04 09:02:12] [OK] - Krypto-Daten erfolgreich verarbeitet.
+[2026-05-04 09:02:12] [OK] - Starte Synchronisation der Kurse...
+[2026-05-04 09:02:12] [OK] - Synchronisation erfolgreich abgeschlossen.
+[2026-05-04 09:03:27] [INFO] - Starte Fiat-API-Abfrage: https://api.exchangerate-api.com/v4/latest/CHF
+[2026-05-04 09:03:28] [OK] - Fiat-Daten erfolgreich verarbeitet.
+[2026-05-04 09:03:28] [INFO] - Starte Krypto-API-Abfrage: CoinGecko
+[2026-05-04 09:03:28] [OK] - Krypto-Daten erfolgreich verarbeitet.
+[2026-05-04 09:03:28] [OK] - Starte Synchronisation der Kurse...
+[2026-05-04 09:03:28] [OK] - Synchronisation erfolgreich abgeschlossen.
+[2026-05-04 09:04:28] [INFO] - Starte Fiat-API-Abfrage: https://api.exchangerate-api.com/v4/latest/CHF
+[2026-05-04 09:04:28] [OK] - Fiat-Daten erfolgreich verarbeitet.
+[2026-05-04 09:04:28] [INFO] - Starte Krypto-API-Abfrage: CoinGecko
+[2026-05-04 09:04:29] [OK] - Krypto-Daten erfolgreich verarbeitet.
+[2026-05-04 09:04:29] [OK] - Starte Synchronisation der Kurse...
+[2026-05-04 09:04:29] [OK] - Synchronisation erfolgreich abgeschlossen.
+[2026-05-04 09:05:28] [INFO] - Starte Fiat-API-Abfrage: https://api.exchangerate-api.com/v4/latest/CHF
+[2026-05-04 09:05:31] [OK] - Fiat-Daten erfolgreich verarbeitet.
+[2026-05-04 09:05:32] [INFO] - Starte Krypto-API-Abfrage: CoinGecko
+[2026-05-04 09:05:32] [OK] - Krypto-Daten erfolgreich verarbeitet.
+[2026-05-04 09:05:32] [OK] - Starte Synchronisation der Kurse...
+[2026-05-04 09:05:32] [OK] - Synchronisation erfolgreich abgeschlossen.
+[2026-05-04 09:06:32] [INFO] - Starte Fiat-API-Abfrage: https://api.exchangerate-api.com/v4/latest/CHF
+[2026-05-04 09:06:33] [OK] - Fiat-Daten erfolgreich verarbeitet.
+[2026-05-04 09:06:33] [INFO] - Starte Krypto-API-Abfrage: CoinGecko
+[2026-05-04 09:06:33] [OK] - Krypto-Daten erfolgreich verarbeitet.
+[2026-05-04 09:06:33] [OK] - Starte Synchronisation der Kurse...
+[2026-05-04 09:06:33] [OK] - Synchronisation erfolgreich abgeschlossen.
+[2026-05-04 09:07:32] [INFO] - Starte Fiat-API-Abfrage: https://api.exchangerate-api.com/v4/latest/CHF
+[2026-05-04 09:07:33] [OK] - Fiat-Daten erfolgreich verarbeitet.
+[2026-05-04 09:07:33] [INFO] - Starte Krypto-API-Abfrage: CoinGecko
+[2026-05-04 09:07:33] [OK] - Krypto-Daten erfolgreich verarbeitet.
+[2026-05-04 09:07:33] [OK] - Starte Synchronisation der Kurse...
+[2026-05-04 09:07:33] [OK] - Synchronisation erfolgreich abgeschlossen.
+[2026-05-04 09:08:32] [INFO] - Starte Fiat-API-Abfrage: https://api.exchangerate-api.com/v4/latest/CHF
+[2026-05-04 09:08:33] [OK] - Fiat-Daten erfolgreich verarbeitet.
+[2026-05-04 09:08:33] [INFO] - Starte Krypto-API-Abfrage: CoinGecko
+[2026-05-04 09:08:33] [OK] - Krypto-Daten erfolgreich verarbeitet.
+[2026-05-04 09:08:33] [OK] - Starte Synchronisation der Kurse...
+[2026-05-04 09:08:33] [OK] - Synchronisation erfolgreich abgeschlossen.
+[2026-05-04 09:09:32] [INFO] - Starte Fiat-API-Abfrage: https://api.exchangerate-api.com/v4/latest/CHF
+[2026-05-04 09:09:33] [OK] - Fiat-Daten erfolgreich verarbeitet.
+[2026-05-04 09:09:33] [INFO] - Starte Krypto-API-Abfrage: CoinGecko
+[2026-05-04 09:09:33] [OK] - Krypto-Daten erfolgreich verarbeitet.
+[2026-05-04 09:09:33] [OK] - Starte Synchronisation der Kurse...
+[2026-05-04 09:09:33] [OK] - Synchronisation erfolgreich abgeschlossen.
+[2026-05-04 09:10:32] [INFO] - Starte Fiat-API-Abfrage: https://api.exchangerate-api.com/v4/latest/CHF
+[2026-05-04 09:10:32] [OK] - Fiat-Daten erfolgreich verarbeitet.
+[2026-05-04 09:10:32] [INFO] - Starte Krypto-API-Abfrage: CoinGecko
+[2026-05-04 09:10:33] [OK] - Krypto-Daten erfolgreich verarbeitet.
+[2026-05-04 09:10:33] [OK] - Starte Synchronisation der Kurse...
+[2026-05-04 09:10:33] [OK] - Synchronisation erfolgreich abgeschlossen.
+[2026-05-04 09:11:32] [INFO] - Starte Fiat-API-Abfrage: https://api.exchangerate-api.com/v4/latest/CHF
+[2026-05-04 09:11:32] [OK] - Fiat-Daten erfolgreich verarbeitet.
+[2026-05-04 09:11:32] [INFO] - Starte Krypto-API-Abfrage: CoinGecko
+[2026-05-04 09:11:33] [OK] - Krypto-Daten erfolgreich verarbeitet.
+[2026-05-04 09:11:33] [OK] - Starte Synchronisation der Kurse...
+[2026-05-04 09:11:33] [OK] - Synchronisation erfolgreich abgeschlossen.
+=======
 [2026-05-04 08:49:26] [INFO] - Starte Fiat-API-Abfrage: https://api.exchangerate-api.com/v4/latest/CHF
 [2026-05-04 08:49:27] [OK] - Fiat-Daten erfolgreich verarbeitet.
 [2026-05-04 08:49:27] [INFO] - Starte Krypto-API-Abfrage: CoinGecko
@@ -82,17 +156,4 @@
 [2026-05-04 09:02:07] [OK] - Krypto-Daten erfolgreich verarbeitet.
 [2026-05-04 09:02:07] [OK] - Starte Synchronisation der Kurse...
 [2026-05-04 09:02:07] [OK] - Synchronisation erfolgreich abgeschlossen.
-[2026-05-04 09:19:12] [INFO] - Starte Fiat-API-Abfrage: https://api.exchangerate-api.com/v4/latest/CHF
-[2026-05-04 09:19:13] [OK] - Fiat-Daten erfolgreich verarbeitet.
-[2026-05-04 09:19:13] [INFO] - Starte Krypto-API-Abfrage: CoinGecko
-[2026-05-04 09:19:13] [NotOK] - Kurs für BTC (CoinGecko) konnte nicht gelesen werden.
-[2026-05-04 09:19:13] [NotOK] - Kurs für ETH (CoinGecko) konnte nicht gelesen werden.
-[2026-05-04 09:19:13] [NotOK] - Kurs für SOL (CoinGecko) konnte nicht gelesen werden.
-[2026-05-04 09:19:13] [NotOK] - Kurs für XRP (CoinGecko) konnte nicht gelesen werden.
-[2026-05-04 09:19:13] [OK] - Krypto-Daten erfolgreich verarbeitet.
-[2026-05-04 09:19:13] [OK] - Starte Synchronisation der Kurse...
-[2026-05-04 09:19:13] [NotOK] - Fehler: Kurs für BTC konnte nicht empfangen werden.
-[2026-05-04 09:19:13] [NotOK] - Fehler: Kurs für ETH konnte nicht empfangen werden.
-[2026-05-04 09:19:13] [NotOK] - Fehler: Kurs für SOL konnte nicht empfangen werden.
-[2026-05-04 09:19:13] [NotOK] - Fehler: Kurs für XRP konnte nicht empfangen werden.
-[2026-05-04 09:19:13] [NotOK] - Synchronisation mit 4 Fehlern beendet.
+>>>>>>> 9883e7071f3b9091ac4852ffa163efc14609d47d

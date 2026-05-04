@@ -12,8 +12,7 @@ source "$(dirname "$0")/storage.sh"
 # --- Konfiguration ---
 BASE_URL="https://api.exchangerate-api.com/v4/latest/CHF"
 CRYPTO_URL="https://api.coingecko.com/api/v3/simple/price"
-ALERT_THRESHOLD=5
-ALERT_MAIL="deine-email@beispiel.ch"  # <--- HIER DEINE E-MAIL EINTRAGEN
+ALERT_THRESHOLD="${ALERT_THRESHOLD:-5}"
 
 # --- Währungs-Arrays (Kriterium c) ---
 FIAT_CURRENCIES=("USD" "EUR")
@@ -103,33 +102,16 @@ fetch_crypto_rates() {
 
 # =============================================================
 # FUNKTION:    send_alert
-# ZWECK:       Verschickt E-Mail via mailx (Kriterium f)
+# ZWECK:       Leitet Alarm an Benachrichtigungs-System weiter (Kriterium f)
 # =============================================================
 send_alert() {
     local curr=$1
     local diff=$2
     local dir=$3
     local val=${RATES[$curr]}
-    
-    local subject="[SafeSync] Markt-Alarm: $curr ist $dir ($diff%)"
-    local body="Achtung: Der Kurs von $curr hat sich signifikant verändert.
-    
-Währung: $curr
-Richtung: $dir
-Veränderung: $diff%
-Aktueller Kurs: $val CHF
 
-Zeitpunkt: $(date '+%d.%m.%Y %H:%M:%S')
-Dies ist eine automatisierte Nachricht von SafeSync."
-
-    # Versand via mailx
-    echo "$body" | mailx -s "$subject" "$ALERT_MAIL"
-    
-    if [[ $? -eq 0 ]]; then
-        log_status "OK" "E-Mail-Alert für $curr erfolgreich versendet."
-    else
-        log_status "NotOK" "E-Mail-Versand für $curr fehlgeschlagen."
-    fi
+    # Delegiert an notify.sh (send_notification)
+    send_notification "$curr" "$diff" "$dir" "$val"
 }
 
 # =============================================================
