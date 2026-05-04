@@ -12,6 +12,7 @@ source "$(dirname "$0")/storage.sh"
 # --- Konfiguration ---
 BASE_URL="https://api.exchangerate-api.com/v4/latest/CHF"
 CRYPTO_URL="https://api.coingecko.com/api/v3/simple/price"
+FIAT_TREND_URL="https://api.frankfurter.dev/v1"
 ALERT_THRESHOLD="${ALERT_THRESHOLD:-5}"
 
 # --- Währungs-Arrays (Kriterium c) ---
@@ -29,6 +30,9 @@ declare -A CRYPTO_IDS=(
 
 # Globales assoziatives Array für aktuelle Kurse
 declare -A RATES
+
+# Globales assoziatives Array für 24h-Trendwerte direkt aus der API (in Prozent)
+declare -A TREND_PCT
 
 # Globales Array für Schwankungs-Alarme (wird in display_dashboard ausgegeben)
 declare -a ALERTS=()
@@ -75,7 +79,7 @@ fetch_crypto_rates() {
     log_status "INFO" "Starte Krypto-API-Abfrage: CoinGecko"
 
     local response
-    response=$(curl -s --max-time 10 "${CRYPTO_URL}?ids=${id_list}&vs_currencies=chf")
+    response=$(curl -s --max-time 10 "${CRYPTO_URL}?ids=${id_list}&vs_currencies=chf&include_24hr_change=true")
 
     if [[ $? -ne 0 || -z "$response" ]]; then
         log_status "NotOK" "Krypto-API-Abfrage fehlgeschlagen."
@@ -91,6 +95,13 @@ fetch_crypto_rates() {
             local rate
             rate=$(echo "scale=10; 1 / $price_chf" | bc -l)
             RATES[$sym]=$rate
+
+            # 24h-Trendwert direkt aus CoinGecko-API übernehmen
+            local change_24h
+            change_24h=$(echo "$response" | jq -r ".[\"$cg_id\"].chf_24h_change")
+            if [[ "$change_24h" != "null" && -n "$change_24h" ]]; then
+                TREND_PCT[$sym]=$(printf "%.2f" "$change_24h")
+            fi
         else
             log_status "NotOK" "Kurs für $sym (CoinGecko) konnte nicht gelesen werden."
         fi
@@ -98,6 +109,72 @@ fetch_crypto_rates() {
 
     log_status "OK" "Krypto-Daten erfolgreich verarbeitet."
     return 0
+}
+
+# =============================================================
+# FUNKTION:    fetch_fiat_trend
+# ZWECK:       Berechnet 24h-Trendwerte für Fiat-Währungen via History-API
+#              oder CSV-Fallback
+# =============================================================
+fetch_fiat_trend() {
+    local curr_list
+    curr_list=$(IFS=','; echo "${FIAT_CURRENCIES[*]}")
+
+    log_status "INFO" "Lade Fiat-Trend via Frankfurter-API."
+
+    # Letzten verfügbaren Handelstag holen
+    local today_response
+    today_response=$(curl -sL --max-time 10 "${FIAT_TREND_URL}/latest?from=CHF&to=${curr_list}")
+
+    if [[ $? -ne 0 || -z "$today_response" ]]; then
+        log_status "INFO" "Frankfurter-API nicht erreichbar – nutze CSV-Fallback."
+        _fiat_trend_csv_fallback
+        return
+    fi
+
+    local latest_date
+    latest_date=$(echo "$today_response" | jq -r '.date // empty' 2>/dev/null)
+
+    if [[ -z "$latest_date" ]]; then
+        log_status "INFO" "Frankfurter-API: kein Datum – nutze CSV-Fallback."
+        _fiat_trend_csv_fallback
+        return
+    fi
+
+    # Vortag des letzten Handelstags (Frankfurter gibt automatisch den nächst-verfügbaren zurück)
+    local prev_date
+    prev_date=$(date -d "${latest_date} -1 day" "+%Y-%m-%d")
+
+    local prev_response
+    prev_response=$(curl -sL --max-time 10 "${FIAT_TREND_URL}/${prev_date}?from=CHF&to=${curr_list}")
+
+    if [[ $? -ne 0 || -z "$prev_response" ]]; then
+        log_status "INFO" "Frankfurter-API: Vortag nicht abrufbar – nutze CSV-Fallback."
+        _fiat_trend_csv_fallback
+        return
+    fi
+
+    for curr in "${FIAT_CURRENCIES[@]}"; do
+        local today_rate prev_rate
+        today_rate=$(echo "$today_response" | jq -r ".rates.$curr // empty" 2>/dev/null)
+        prev_rate=$(echo "$prev_response" | jq -r ".rates.$curr // empty" 2>/dev/null)
+        if [[ -n "$today_rate" && -n "$prev_rate" && "$prev_rate" != "0" ]]; then
+            TREND_PCT[$curr]=$(echo "scale=4; (($today_rate - $prev_rate) / $prev_rate) * 100" | bc)
+        fi
+    done
+    log_status "OK" "Fiat-Trend via Frankfurter-API berechnet (${latest_date} vs ${prev_date})."
+}
+
+_fiat_trend_csv_fallback() {
+    for curr in "${FIAT_CURRENCIES[@]}"; do
+        local current_rate="${RATES[$curr]}"
+        [[ -z "$current_rate" ]] && continue
+        local old_rate_24h
+        old_rate_24h=$(load_rate_24h_ago "$curr")
+        if [[ -n "$old_rate_24h" && "$old_rate_24h" != "0" && "$old_rate_24h" != "0.00" ]]; then
+            TREND_PCT[$curr]=$(echo "scale=4; (($current_rate - $old_rate_24h) / $old_rate_24h) * 100" | bc)
+        fi
+    done
 }
 
 # =============================================================
@@ -155,6 +232,7 @@ check_thresholds() {
 # =============================================================
 run_api() {
     fetch_rates || return 1
+    fetch_fiat_trend    # 24h-Trend für Fiat berechnen
     fetch_crypto_rates  # Fehler hier sind nicht kritisch
     check_thresholds
     return 0

@@ -91,8 +91,27 @@ calc_diff() {
 load_old_rate() {
     local currency=$1
     if [ ! -f "$HISTORY_FILE" ]; then echo "0.00"; return; fi
-    
+
     # Holt den letzten Wert (tail -n 1) vor dem aktuellsten Eintrag
     local val=$(grep ",$currency," "$HISTORY_FILE" | tail -n 2 | head -n 1 | cut -d',' -f3)
+    echo "${val:-0.00}"
+}
+
+# --- FUNKTION: load_rate_24h_ago ---
+# Sucht den gespeicherten Kurs von vor ~24 Stunden als Fallback für den Trend.
+load_rate_24h_ago() {
+    local currency=$1
+    if [ ! -f "$HISTORY_FILE" ]; then echo "0.00"; return; fi
+
+    local target_hour
+    target_hour=$(date -d "24 hours ago" "+%Y-%m-%d %H")
+
+    local val
+    val=$(grep ",$currency," "$HISTORY_FILE" | awk -F',' -v t="$target_hour" '$1 ~ t {print $3}' | tail -1)
+
+    # Fallback: ältester verfügbarer Eintrag
+    if [[ -z "$val" ]]; then
+        val=$(grep ",$currency," "$HISTORY_FILE" | head -1 | cut -d',' -f3)
+    fi
     echo "${val:-0.00}"
 }

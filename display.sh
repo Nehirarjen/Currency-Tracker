@@ -132,10 +132,21 @@ function display_dashboard() {
             old_chf=$(echo "scale=6; 1 / $old_rate" | bc -l)
         fi
 
-        local trend_sym
-        trend_sym=$(get_trend_symbol "$current_chf" "$old_chf")
-        local trend_col
-        trend_col=$(get_trend_color "$current_chf" "$old_chf")
+        local trend_sym trend_col
+        if [[ -v TREND_PCT[$curr] ]]; then
+            local is_positive
+            is_positive=$(echo "${TREND_PCT[$curr]} >= 0" | bc -l)
+            if [[ "$is_positive" -eq 1 ]]; then
+                trend_sym="↑"
+                trend_col="${COLOR_GREEN}"
+            else
+                trend_sym="↓"
+                trend_col="${COLOR_RED}"
+            fi
+        else
+            trend_sym=$(get_trend_symbol "$current_chf" "$old_chf")
+            trend_col=$(get_trend_color "$current_chf" "$old_chf")
+        fi
 
         # Abstand zum ATH: minimaler Rohkurs = maximaler CHF-Kurs (ATH)
         local min_raw_rate
@@ -156,9 +167,11 @@ function display_dashboard() {
         local rate_str
         rate_str=$(printf "%.4f CHF" "$current_chf")
 
-        # Prozentuale Änderung für Trend-Spalte
+        # Prozentuale Änderung für Trend-Spalte (API-Wert bevorzugt)
         local change_pct="0.0"
-        if [[ -n "$old_rate" && "$old_rate" != "0" && "$old_rate" != "0.00" ]]; then
+        if [[ -v TREND_PCT[$curr] ]]; then
+            change_pct=$(printf "%.1f" "${TREND_PCT[$curr]}" 2>/dev/null || echo "0.0")
+        elif [[ -n "$old_rate" && "$old_rate" != "0" && "$old_rate" != "0.00" ]]; then
             change_pct=$(echo "scale=1; (($current_chf - $old_chf) / $old_chf) * 100" | bc)
             change_pct=$(printf "%.1f" "$change_pct" 2>/dev/null || echo "0.0")
         fi
