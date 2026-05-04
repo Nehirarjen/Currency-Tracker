@@ -14,15 +14,15 @@ COLOR_BOLD='\033[1m'
 # Funktion: draw_table_header
 # Zweck: Zeichnet den Kopf der Währungstabelle
 function draw_table_header() {
-    printf "╔══════════╦══════════════╦═══════════╦══════════════════════╗\n"
-    printf "║ Währung  ║ Aktueller    ║ Trend     ║ Abstand zum ATH      ║\n"
-    printf "╠══════════╬══════════════╬═══════════╬══════════════════════╣\n"
+    printf "╔════════════╦══════════════════╦══════════════╦══════════════════════╗\n"
+    printf "║ Währung    ║ Aktueller        ║ Trend        ║ Abstand zum ATH      ║\n"
+    printf "╠════════════╬══════════════════╬══════════════╬══════════════════════╣\n"
 }
 
 # Funktion: draw_table_footer
 # Zweck: Schließt die Tabelle ab
 function draw_table_footer() {
-    printf "╚══════════╩══════════════╩═══════════╩══════════════════════╝\n"
+    printf "╚════════════╩══════════════════╩══════════════╩══════════════════════╝\n"
 }
 
 # Funktion: get_trend_symbol
@@ -167,12 +167,12 @@ function display_dashboard() {
         local trend_content="${trend_sym} ${change_sign}${change_pct}%"
 
         local col1 col2 col3 col4
-        col1=$(pad_right "$curr"           8)
-        col2=$(pad_right "$rate_str"      12)
-        col3=$(pad_right "$trend_content" 10)
+        col1=$(pad_right "$curr"           10)
+        col2=$(pad_right "$rate_str"      16)
+        col3=$(pad_right "$trend_content" 12)
         col4=$(pad_right "$bar"           20 12)
 
-        printf "║ %s ║ %s ║ ${trend_col}%s${COLOR_RESET}║ %s ║\n" \
+        printf "║ %s ║ %s ║ ${trend_col}%s${COLOR_RESET} ║ %s ║\n" \
             "$col1" "$col2" "$col3" "$col4"
     done
 
