@@ -61,15 +61,18 @@ function draw_progress_bar() {
     local percentage=$1
     local filled_blocks=$((percentage / 10))
     local empty_blocks=$((10 - filled_blocks))
+    local GREEN=$'\033[32m'
+    local GRAY=$'\033[2;37m'
+    local RESET=$'\033[0m'
 
     local bar="["
 
     for ((i=0; i<filled_blocks; i++)); do
-        bar+="█"
+        bar+="${GREEN}█${RESET}"
     done
 
     for ((i=0; i<empty_blocks; i++)); do
-        bar+="░"
+        bar+="${GRAY}░${RESET}"
     done
 
     bar+="]"

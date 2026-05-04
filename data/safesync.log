@@ -8,3 +8,19 @@
 [2026-05-03 23:50:34] [NotOK] - Fehler: Kurs für BTC konnte nicht empfangen werden.
 [2026-05-03 23:50:34] [NotOK] - Fehler: Kurs für ETH konnte nicht empfangen werden.
 [2026-05-03 23:50:34] [NotOK] - Synchronisation mit 2 Fehlern beendet.
+[2026-05-04 07:29:02] [INFO] - Starte API-Abfrage: https://api.exchangerate-api.com/v4/latest/CHF
+[2026-05-04 07:29:03] [NotOK] - Kurs für BTC konnte nicht gelesen werden.
+[2026-05-04 07:29:03] [NotOK] - Kurs für ETH konnte nicht gelesen werden.
+[2026-05-04 07:29:03] [OK] - API-Daten erfolgreich verarbeitet.
+[2026-05-04 07:29:03] [OK] - Starte Synchronisation der Kurse...
+[2026-05-04 07:29:03] [NotOK] - Fehler: Kurs für BTC konnte nicht empfangen werden.
+[2026-05-04 07:29:03] [NotOK] - Fehler: Kurs für ETH konnte nicht empfangen werden.
+[2026-05-04 07:29:03] [NotOK] - Synchronisation mit 2 Fehlern beendet.
+[2026-05-04 07:35:02] [INFO] - Starte API-Abfrage: https://api.exchangerate-api.com/v4/latest/CHF
+[2026-05-04 07:35:03] [NotOK] - Kurs für BTC konnte nicht gelesen werden.
+[2026-05-04 07:35:03] [NotOK] - Kurs für ETH konnte nicht gelesen werden.
+[2026-05-04 07:35:03] [OK] - API-Daten erfolgreich verarbeitet.
+[2026-05-04 07:35:03] [OK] - Starte Synchronisation der Kurse...
+[2026-05-04 07:35:03] [NotOK] - Fehler: Kurs für BTC konnte nicht empfangen werden.
+[2026-05-04 07:35:03] [NotOK] - Fehler: Kurs für ETH konnte nicht empfangen werden.
+[2026-05-04 07:35:03] [NotOK] - Synchronisation mit 2 Fehlern beendet.
