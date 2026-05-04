@@ -70,3 +70,15 @@
 [2026-05-04 08:45:17] [OK] - Krypto-Daten erfolgreich verarbeitet.
 [2026-05-04 08:45:17] [OK] - Starte Synchronisation der Kurse...
 [2026-05-04 08:45:17] [OK] - Synchronisation erfolgreich abgeschlossen.
+[2026-05-04 08:49:26] [INFO] - Starte Fiat-API-Abfrage: https://api.exchangerate-api.com/v4/latest/CHF
+[2026-05-04 08:49:27] [OK] - Fiat-Daten erfolgreich verarbeitet.
+[2026-05-04 08:49:27] [INFO] - Starte Krypto-API-Abfrage: CoinGecko
+[2026-05-04 08:49:27] [OK] - Krypto-Daten erfolgreich verarbeitet.
+[2026-05-04 08:49:27] [OK] - Starte Synchronisation der Kurse...
+[2026-05-04 08:49:27] [OK] - Synchronisation erfolgreich abgeschlossen.
+[2026-05-04 09:02:06] [INFO] - Starte Fiat-API-Abfrage: https://api.exchangerate-api.com/v4/latest/CHF
+[2026-05-04 09:02:06] [OK] - Fiat-Daten erfolgreich verarbeitet.
+[2026-05-04 09:02:06] [INFO] - Starte Krypto-API-Abfrage: CoinGecko
+[2026-05-04 09:02:07] [OK] - Krypto-Daten erfolgreich verarbeitet.
+[2026-05-04 09:02:07] [OK] - Starte Synchronisation der Kurse...
+[2026-05-04 09:02:07] [OK] - Synchronisation erfolgreich abgeschlossen.
