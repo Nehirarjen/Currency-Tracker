@@ -273,3 +273,19 @@
 [2026-05-04 09:58:09] [OK] - Krypto-Daten erfolgreich verarbeitet.
 [2026-05-04 09:58:09] [OK] - Starte Synchronisation der Kurse...
 [2026-05-04 09:58:09] [OK] - Synchronisation erfolgreich abgeschlossen.
+[2026-05-04 09:58:36] [INFO] - Starte Fiat-API-Abfrage: https://api.exchangerate-api.com/v4/latest/CHF
+[2026-05-04 09:58:36] [OK] - Fiat-Daten erfolgreich verarbeitet.
+[2026-05-04 09:58:36] [INFO] - Lade Fiat-History für Trendberechnung: https://api.exchangerate-api.com/v4/history/CHF/2026/5/3
+[2026-05-04 09:58:37] [INFO] - Fiat-History-API nicht verfügbar – nutze CSV-Fallback (24h-Wert).
+[2026-05-04 09:58:37] [INFO] - Starte Krypto-API-Abfrage: CoinGecko
+[2026-05-04 09:58:37] [OK] - Krypto-Daten erfolgreich verarbeitet.
+[2026-05-04 09:58:37] [OK] - Starte Synchronisation der Kurse...
+[2026-05-04 09:58:37] [OK] - Synchronisation erfolgreich abgeschlossen.
+[2026-05-04 09:59:39] [INFO] - Starte Fiat-API-Abfrage: https://api.exchangerate-api.com/v4/latest/CHF
+[2026-05-04 09:59:39] [OK] - Fiat-Daten erfolgreich verarbeitet.
+[2026-05-04 09:59:39] [INFO] - Lade Fiat-History für Trendberechnung: https://api.exchangerate-api.com/v4/history/CHF/2026/5/3
+[2026-05-04 09:59:40] [INFO] - Fiat-History-API nicht verfügbar – nutze CSV-Fallback (24h-Wert).
+[2026-05-04 09:59:40] [INFO] - Starte Krypto-API-Abfrage: CoinGecko
+[2026-05-04 09:59:40] [OK] - Krypto-Daten erfolgreich verarbeitet.
+[2026-05-04 09:59:40] [OK] - Starte Synchronisation der Kurse...
+[2026-05-04 09:59:40] [OK] - Synchronisation erfolgreich abgeschlossen.
