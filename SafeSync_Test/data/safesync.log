@@ -1,0 +1,17 @@
+[2026-04-22 16:45:10] [OK] - Datenbank und Struktur initialisiert.
+[2026-04-22 16:45:10] [INFO] - Starte API-Abfrage: https://api.exchangerate-api.com/v4/latest/CHF
+[2026-04-22 16:45:10] [NotOK] - API hat Fehler zurückgegeben: 
+[2026-04-22 16:51:37] [INFO] - Starte API-Abfrage: https://api.exchangerate-api.com/v4/latest/CHF
+[2026-04-22 16:51:37] [NotOK] - API hat Fehler zurückgegeben: error
+[2026-04-22 16:53:46] [INFO] - Starte API-Abfrage: https://api.exchangerate-api.com/v4/latest/CHF
+[2026-04-22 16:53:47] [NotOK] - API hat Fehler zurückgegeben: error
+[2026-04-22 17:00:16] [INFO] - Starte API-Abfrage: https://api.exchangerate-api.com/v4/latest/CHF
+[2026-04-22 17:00:16] [NotOK] - API hat Fehler zurückgegeben: error
+[2026-04-22 17:00:16] [OK] - Starte Synchronisation der Kurse...
+[2026-04-22 17:00:16] [NotOK] - Fehler: Kurs für EUR konnte nicht empfangen werden.
+[2026-04-22 17:00:16] [NotOK] - Fehler: Kurs für USD konnte nicht empfangen werden.
+[2026-04-22 17:00:16] [NotOK] - Fehler: Kurs für BTC konnte nicht empfangen werden.
+[2026-04-22 17:00:16] [NotOK] - Fehler: Kurs für ETH konnte nicht empfangen werden.
+[2026-04-22 17:00:16] [NotOK] - Fehler: Kurs für GBP konnte nicht empfangen werden.
+[2026-04-22 17:00:16] [NotOK] - Fehler: Kurs für JPY konnte nicht empfangen werden.
+[2026-04-22 17:00:16] [NotOK] - Synchronisation mit 6 Fehlern beendet.
