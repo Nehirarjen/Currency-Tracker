@@ -24,3 +24,37 @@
 [2026-05-04 07:35:03] [NotOK] - Fehler: Kurs für BTC konnte nicht empfangen werden.
 [2026-05-04 07:35:03] [NotOK] - Fehler: Kurs für ETH konnte nicht empfangen werden.
 [2026-05-04 07:35:03] [NotOK] - Synchronisation mit 2 Fehlern beendet.
+[2026-05-04 08:12:31] [INFO] - Starte API-Abfrage: https://api.exchangerate-api.com/v4/latest/CHF
+[2026-05-04 08:12:31] [NotOK] - Kurs für BTC konnte nicht gelesen werden.
+[2026-05-04 08:12:31] [NotOK] - Kurs für ETH konnte nicht gelesen werden.
+[2026-05-04 08:12:31] [OK] - API-Daten erfolgreich verarbeitet.
+[2026-05-04 08:12:32] [OK] - Starte Synchronisation der Kurse...
+[2026-05-04 08:12:32] [NotOK] - Fehler: Kurs für BTC konnte nicht empfangen werden.
+[2026-05-04 08:12:32] [NotOK] - Fehler: Kurs für ETH konnte nicht empfangen werden.
+[2026-05-04 08:12:32] [NotOK] - Synchronisation mit 2 Fehlern beendet.
+[2026-05-04 08:20:29] [INFO] - Starte API-Abfrage: https://api.exchangerate-api.com/v4/latest/CHF
+[2026-05-04 08:20:30] [NotOK] - Kurs für BTC konnte nicht gelesen werden.
+[2026-05-04 08:20:30] [NotOK] - Kurs für ETH konnte nicht gelesen werden.
+[2026-05-04 08:20:30] [OK] - API-Daten erfolgreich verarbeitet.
+[2026-05-04 08:20:30] [OK] - Starte Synchronisation der Kurse...
+[2026-05-04 08:20:30] [NotOK] - Fehler: Kurs für BTC konnte nicht empfangen werden.
+[2026-05-04 08:20:30] [NotOK] - Fehler: Kurs für ETH konnte nicht empfangen werden.
+[2026-05-04 08:20:30] [NotOK] - Synchronisation mit 2 Fehlern beendet.
+[2026-05-04 08:25:24] [INFO] - Starte Fiat-API-Abfrage: https://api.exchangerate-api.com/v4/latest/CHF
+[2026-05-04 08:25:25] [OK] - Fiat-Daten erfolgreich verarbeitet.
+[2026-05-04 08:25:25] [INFO] - Starte Krypto-API-Abfrage: CoinGecko
+[2026-05-04 08:25:26] [OK] - Krypto-Daten erfolgreich verarbeitet.
+[2026-05-04 08:25:26] [OK] - Starte Synchronisation der Kurse...
+[2026-05-04 08:25:26] [OK] - Synchronisation erfolgreich abgeschlossen.
+[2026-05-04 08:26:03] [INFO] - Starte Fiat-API-Abfrage: https://api.exchangerate-api.com/v4/latest/CHF
+[2026-05-04 08:26:04] [OK] - Fiat-Daten erfolgreich verarbeitet.
+[2026-05-04 08:26:04] [INFO] - Starte Krypto-API-Abfrage: CoinGecko
+[2026-05-04 08:26:04] [OK] - Krypto-Daten erfolgreich verarbeitet.
+[2026-05-04 08:26:04] [OK] - Starte Synchronisation der Kurse...
+[2026-05-04 08:26:04] [OK] - Synchronisation erfolgreich abgeschlossen.
+[2026-05-04 08:33:18] [INFO] - Starte Fiat-API-Abfrage: https://api.exchangerate-api.com/v4/latest/CHF
+[2026-05-04 08:33:19] [OK] - Fiat-Daten erfolgreich verarbeitet.
+[2026-05-04 08:33:19] [INFO] - Starte Krypto-API-Abfrage: CoinGecko
+[2026-05-04 08:33:19] [OK] - Krypto-Daten erfolgreich verarbeitet.
+[2026-05-04 08:33:19] [OK] - Starte Synchronisation der Kurse...
+[2026-05-04 08:33:19] [OK] - Synchronisation erfolgreich abgeschlossen.

@@ -120,20 +120,31 @@ function display_dashboard() {
         local current_rate="${RATES[$curr]}"
         [[ -z "$current_rate" || "$current_rate" == "null" ]] && continue
 
+        # API liefert "X Fremdwährung pro 1 CHF" → umrechnen auf "X CHF pro 1 Fremdwährung"
+        local current_chf
+        current_chf=$(echo "scale=6; 1 / $current_rate" | bc -l)
+
         local old_rate
         old_rate=$(load_old_rate "$curr")
 
-        local trend_sym
-        trend_sym=$(get_trend_symbol "$current_rate" "$old_rate")
-        local trend_col
-        trend_col=$(get_trend_color "$current_rate" "$old_rate")
+        local old_chf="$current_chf"
+        if [[ -n "$old_rate" && "$old_rate" != "0" && "$old_rate" != "0.00" ]]; then
+            old_chf=$(echo "scale=6; 1 / $old_rate" | bc -l)
+        fi
 
-        # Abstand zum ATH: maximaler Kurs aus History als 100%
-        local max_rate
-        max_rate=$(grep ",$curr," "$HISTORY_FILE" 2>/dev/null | cut -d',' -f3 | sort -n | tail -1)
+        local trend_sym
+        trend_sym=$(get_trend_symbol "$current_chf" "$old_chf")
+        local trend_col
+        trend_col=$(get_trend_color "$current_chf" "$old_chf")
+
+        # Abstand zum ATH: minimaler Rohkurs = maximaler CHF-Kurs (ATH)
+        local min_raw_rate
+        min_raw_rate=$(grep ",$curr," "$HISTORY_FILE" 2>/dev/null | cut -d',' -f3 | sort -n | head -1)
         local pct=100
-        if [[ -n "$max_rate" && "$max_rate" != "0" ]]; then
-            pct=$(echo "scale=0; ($current_rate / $max_rate) * 100 / 1" | bc 2>/dev/null)
+        if [[ -n "$min_raw_rate" && "$min_raw_rate" != "0" ]]; then
+            local max_chf
+            max_chf=$(echo "scale=6; 1 / $min_raw_rate" | bc -l)
+            pct=$(echo "scale=0; ($current_chf / $max_chf) * 100 / 1" | bc 2>/dev/null)
             pct=${pct:-100}
             (( pct > 100 )) && pct=100
             (( pct < 0 ))   && pct=0
@@ -143,17 +154,39 @@ function display_dashboard() {
         bar=$(draw_progress_bar "$pct")
 
         local rate_str
-        rate_str=$(printf "%.4f CHF" "$current_rate")
+        rate_str=$(printf "%.4f CHF" "$current_chf")
 
-        local col1 col2 col4
-        col1=$(pad_right "$curr"      8)
-        col2=$(pad_right "$rate_str" 12)
-        col4=$(pad_right "$bar"      20 12)
+        # Prozentuale Änderung für Trend-Spalte
+        local change_pct="0.0"
+        if [[ -n "$old_rate" && "$old_rate" != "0" && "$old_rate" != "0.00" ]]; then
+            change_pct=$(echo "scale=1; (($current_chf - $old_chf) / $old_chf) * 100" | bc)
+            change_pct=$(printf "%.1f" "$change_pct" 2>/dev/null || echo "0.0")
+        fi
+        local change_sign=""
+        (( $(echo "$change_pct >= 0" | bc -l) )) && change_sign="+"
+        local trend_content="${trend_sym} ${change_sign}${change_pct}%"
 
-        printf "║ %s ║ %s ║ ${trend_col}%s${COLOR_RESET}        ║ %s ║\n" \
-            "$col1" "$col2" "$trend_sym" "$col4"
+        local col1 col2 col3 col4
+        col1=$(pad_right "$curr"           8)
+        col2=$(pad_right "$rate_str"      12)
+        col3=$(pad_right "$trend_content" 10)
+        col4=$(pad_right "$bar"           20 12)
+
+        printf "║ %s ║ %s ║ ${trend_col}%s${COLOR_RESET}║ %s ║\n" \
+            "$col1" "$col2" "$col3" "$col4"
     done
 
     draw_table_footer
+
+    # Schwankungs-Alarme anzeigen
+    if [[ ${#ALERTS[@]} -gt 0 ]]; then
+        local COLOR_YELLOW='\033[1;33m'
+        echo ""
+        echo -e "${COLOR_BOLD}${COLOR_RED}!! MARKT-ALARM !!${COLOR_RESET}"
+        for alert in "${ALERTS[@]}"; do
+            echo -e "  ${COLOR_YELLOW}[!] ${alert}${COLOR_RESET}"
+        done
+    fi
+
     echo ""
 }

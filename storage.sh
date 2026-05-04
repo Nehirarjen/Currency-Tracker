@@ -47,12 +47,9 @@ save_rates() {
     init_storage
     local error_count=0
     
-    # Array der zu überwachenden Währungen
-    local currencies=("EUR" "USD" "BTC" "ETH" "GBP" "JPY")
-    
     log_status "OK" "Starte Synchronisation der Kurse..."
-    
-    for curr in "${currencies[@]}"; do
+
+    for curr in "${CURRENCIES[@]}"; do
         # Aufruf der API-Funktion (von Person 1)
         local rate="${RATES[$curr]}"
         

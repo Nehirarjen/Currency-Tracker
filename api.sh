@@ -11,31 +11,45 @@ source "$(dirname "$0")/storage.sh"
 
 # --- Konfiguration ---
 BASE_URL="https://api.exchangerate-api.com/v4/latest/CHF"
+CRYPTO_URL="https://api.coingecko.com/api/v3/simple/price"
 ALERT_THRESHOLD=5
 ALERT_MAIL="deine-email@beispiel.ch"  # <--- HIER DEINE E-MAIL EINTRAGEN
 
-# --- Währungs-Array (Kriterium c) ---
-CURRENCIES=("USD" "EUR" "GBP" "JPY" "BTC" "ETH")
+# --- Währungs-Arrays (Kriterium c) ---
+FIAT_CURRENCIES=("USD" "EUR")
+CRYPTO_CURRENCIES=("BTC" "ETH" "SOL" "XRP")
+CURRENCIES=("${FIAT_CURRENCIES[@]}" "${CRYPTO_CURRENCIES[@]}")
+
+# Mapping: Symbol → CoinGecko-ID
+declare -A CRYPTO_IDS=(
+    ["BTC"]="bitcoin"
+    ["ETH"]="ethereum"
+    ["SOL"]="solana"
+    ["XRP"]="ripple"
+)
 
 # Globales assoziatives Array für aktuelle Kurse
 declare -A RATES
+
+# Globales Array für Schwankungs-Alarme (wird in display_dashboard ausgegeben)
+declare -a ALERTS=()
 
 # =============================================================
 # FUNKTION:    fetch_rates
 # ZWECK:       Ruft aktuelle Wechselkurse ab und parst JSON
 # =============================================================
 fetch_rates() {
-    log_status "INFO" "Starte API-Abfrage: $BASE_URL"
+    log_status "INFO" "Starte Fiat-API-Abfrage: $BASE_URL"
 
     local response
     response=$(curl -s --max-time 10 "$BASE_URL")
 
     if [[ $? -ne 0 || -z "$response" ]]; then
-        log_status "NotOK" "API-Abfrage fehlgeschlagen."
+        log_status "NotOK" "Fiat-API-Abfrage fehlgeschlagen."
         return 1
     fi
 
-    for curr in "${CURRENCIES[@]}"; do
+    for curr in "${FIAT_CURRENCIES[@]}"; do
         local rate=$(echo "$response" | jq -r ".rates.$curr")
         if [[ "$rate" != "null" && -n "$rate" ]]; then
             RATES[$curr]=$rate
@@ -44,7 +58,46 @@ fetch_rates() {
         fi
     done
 
-    log_status "OK" "API-Daten erfolgreich verarbeitet."
+    log_status "OK" "Fiat-Daten erfolgreich verarbeitet."
+    return 0
+}
+
+# =============================================================
+# FUNKTION:    fetch_crypto_rates
+# ZWECK:       Ruft Krypto-Kurse via CoinGecko ab (CHF pro Coin)
+# =============================================================
+fetch_crypto_rates() {
+    local id_list=""
+    for sym in "${CRYPTO_CURRENCIES[@]}"; do
+        id_list+="${CRYPTO_IDS[$sym]},"
+    done
+    id_list="${id_list%,}"
+
+    log_status "INFO" "Starte Krypto-API-Abfrage: CoinGecko"
+
+    local response
+    response=$(curl -s --max-time 10 "${CRYPTO_URL}?ids=${id_list}&vs_currencies=chf")
+
+    if [[ $? -ne 0 || -z "$response" ]]; then
+        log_status "NotOK" "Krypto-API-Abfrage fehlgeschlagen."
+        return 1
+    fi
+
+    for sym in "${CRYPTO_CURRENCIES[@]}"; do
+        local cg_id="${CRYPTO_IDS[$sym]}"
+        local price_chf
+        price_chf=$(echo "$response" | jq -r ".[\"$cg_id\"].chf")
+        if [[ "$price_chf" != "null" && -n "$price_chf" && "$price_chf" != "0" ]]; then
+            # Umrechnen auf "Coins pro CHF" (konsistent mit Fiat-Format)
+            local rate
+            rate=$(echo "scale=10; 1 / $price_chf" | bc -l)
+            RATES[$sym]=$rate
+        else
+            log_status "NotOK" "Kurs für $sym (CoinGecko) konnte nicht gelesen werden."
+        fi
+    done
+
+    log_status "OK" "Krypto-Daten erfolgreich verarbeitet."
     return 0
 }
 
@@ -106,6 +159,10 @@ check_thresholds() {
                 (( $(echo "$change < 0" | bc -l) )) && direction="DOWN"
 
                 send_alert "$currency" "$change" "$direction"
+
+                local alert_sign=""
+                [[ "$direction" == "UP" ]] && alert_sign="+"
+                ALERTS+=("$currency: ${alert_sign}${change}% Schwankung erkannt!")
             fi
         fi
     done
@@ -116,6 +173,7 @@ check_thresholds() {
 # =============================================================
 run_api() {
     fetch_rates || return 1
+    fetch_crypto_rates  # Fehler hier sind nicht kritisch
     check_thresholds
     return 0
 }
